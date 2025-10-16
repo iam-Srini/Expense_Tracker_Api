@@ -1,6 +1,65 @@
+# -------------------------------
+# Python / FastAPI Project Ignore
+# -------------------------------
+
+# Byte-compiled / optimized / DLL files
 __pycache__/
-*.pyc
-.env
+*.py[cod]
+*$py.class
+
+# Virtual environment
 myenv/
+venv/
+.env/
+.venv/
+
+# Environment variables
+.env
+*.env
+
+# macOS system files
 .DS_Store
+.AppleDouble
+.LSOverride
+
+# Logs and databases
+*.log
 *.sqlite3
+*.db
+*.pid
+
+# VSCode / PyCharm / IDE configs
+.vscode/
+.idea/
+*.swp
+
+# Testing / coverage
+.coverage
+.tox/
+.nox/
+.pytest_cache/
+htmlcov/
+
+# Build / distribution files
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Dependency caches
+pip-wheel-metadata/
+__pypackages__/
+
+# Temporary files
+*.tmp
+*.bak
+*.orig
+*.old
+
+# Jupyter / Notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# -------------------------------
+# End of .gitignore
+# -------------------------------
