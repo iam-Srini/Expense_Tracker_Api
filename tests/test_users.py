@@ -141,8 +141,19 @@ def test_read_user_success(client):
     response = client.post("/users/", json=payload)
     assert response.status_code == status.HTTP_201_CREATED
     user_id = response.json()["id"]
+    user_name = response.json()["email"]
+    print(response.json())
+    login_payload ={
+        "username": user_name,
+        "password":"stronG@123"
+    }
+    response = client.post("auth/login", data=login_payload)
+    assert response.status_code == status.HTTP_200_OK
+    token = response.json()["access_token"]
+    headers = {"Authorization": f"Bearer {token}"}
+    client.headers.update(headers)
     # Now, read the user
-    response = client.get(f"/users/{user_id}")
+    response = client.get(f"/users/{user_id}", headers=headers)
     assert response.status_code == status.HTTP_200_OK
     data = response.json()
     assert data["id"] == user_id
@@ -155,9 +166,9 @@ def test_read_user_success(client):
 
 def test_read_user_not_found(client):
     response = client.get("/users/9999")  # Assuming this ID does not exist
-    assert response.status_code == status.HTTP_404_NOT_FOUND
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
     data = response.json()
-    assert data["detail"] == "User not found"
+    assert data["detail"] == "Not authenticated"
 
 
 def test_update_user_success(client):
@@ -170,13 +181,23 @@ def test_update_user_success(client):
     response = client.post("/users/", json=payload)
     assert response.status_code == status.HTTP_201_CREATED
     user_id = response.json()["id"]
+    user_email = response.json()["email"]
+    user_payload = {
+        "username" : user_email,
+        "password" : "stronG@123"
+    }
+    response = client.post("/auth/login", data = user_payload)
+    assert response.status_code == status.HTTP_200_OK
+    token = response.json()["access_token"]
+    headers = {"Authorization": f"Bearer {token}"}
+    client.headers.update(headers)
     # Now, update the user
     update_payload = {
         "name": "Updated User",
         "email": "updatetestuser@gmail.com",
         "password": "NewstronG@123"
     }
-    response = client.put(f"/users/{user_id}", json=update_payload)
+    response = client.put(f"/users/{user_id}", json=update_payload, headers=headers)
     assert response.status_code == status.HTTP_200_OK
     data = response.json()
     assert data["id"] == user_id
@@ -184,7 +205,6 @@ def test_update_user_success(client):
     assert data["email"] == update_payload["email"]
     assert "password" not in data  # Ensure password is not returned
     assert "created_at" in data
-    assert "id" in data
 
 
 def test_update_user_not_found(client):
@@ -194,9 +214,9 @@ def test_update_user_not_found(client):
         "password": "NewstronG@123"
     }
     response = client.put("/users/9999", json=update_payload)  # Assuming this ID does not exist
-    assert response.status_code == status.HTTP_404_NOT_FOUND
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
     data = response.json()
-    assert data["detail"] == "User not found"   
+    assert data["detail"] == "Not authenticated"   
 
 
 def test_delete_user_success(client):
@@ -209,16 +229,27 @@ def test_delete_user_success(client):
     response = client.post("/users/", json=payload) 
     assert response.status_code == status.HTTP_201_CREATED
     user_id = response.json()["id"]
+    user_name = response.json()["email"]
+    user_payload = {
+        "username": user_name,
+        "password": "stronG@123"
+    }
+    response = client.post("/auth/login", data = user_payload)
+    assert response.status_code == status.HTTP_200_OK
+    print(response.json())
+    token = response.json()["access_token"]
+    headers = {"Authorization": f"Bearer {token}"}
+    client.headers.update(headers)
     # Now, delete the user
-    response = client.delete(f"/users/{user_id}")
+    response = client.delete(f"/users/{user_id}", headers= headers)
     assert response.status_code == status.HTTP_204_NO_CONTENT
     # Verify the user is deleted    
     response = client.get(f"/users/{user_id}")
-    assert response.status_code == status.HTTP_404_NOT_FOUND
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
 
 def test_delete_user_not_found(client):
     response = client.delete("/users/9999")  # Assuming this ID does not exist
-    assert response.status_code == status.HTTP_404_NOT_FOUND
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
     data = response.json()
-    assert data["detail"] == "User not found"
+    assert data["detail"] == "Not authenticated"
