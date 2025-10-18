@@ -14,7 +14,7 @@ A robust RESTful API for managing personal expenses with secure authentication a
 
 **Base URL:**
 ```
-https://y=
+https://expense-tracker-api-i88y.onrender.com
 ```
 
 ### Authentication
@@ -30,7 +30,7 @@ Authorization: Bearer <access_token>
 ## 🔐 Authentication Endpoints
 
 ### Login
-**POST** `/login`
+**POST** `/auth/login`
 
 **Request:**
 ```json
@@ -251,7 +251,7 @@ Authorization: Bearer <access_token>
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/expense-tracker-api.git
+   git clone https://github.com/iam-Srini/Expense_Tracker_Api.git
    cd expense-tracker-api
    ```
 
@@ -272,7 +272,7 @@ Authorization: Bearer <access_token>
    DATABASE_URL=sqlite:///./expenses.db
    SECRET_KEY=your-secret-key-here
    ALGORITHM=HS256
-   ACCESS_TOKEN_EXPIRE_MINUTES=15
+   ACCESS_TOKEN_EXPIRE_MINUTES=30
    ```
 
 5. **Run the application**
@@ -288,7 +288,7 @@ The API will be available at `http://localhost:8000`
 
 #### User Registration
 ```bash
-curl -X POST "https://your-api-domain.com/users/" \
+curl -X POST "https://expense-tracker-api-i88y.onrender.com/users/" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "John Doe",
@@ -299,7 +299,7 @@ curl -X POST "https://your-api-domain.com/users/" \
 
 #### User Login
 ```bash
-curl -X POST "https://your-api-domain.com/login" \
+curl -X POST "https://expense-tracker-api-i88y.onrender.com/auth/login" \
   -H "Content-Type: application/json" \
   -d '{
     "email": "john@example.com",
@@ -309,7 +309,7 @@ curl -X POST "https://your-api-domain.com/login" \
 
 #### Create Expense (Authenticated)
 ```bash
-curl -X POST "https://your-api-domain.com/expenses/" \
+curl -X POST "https://expense-tracker-api-i88y.onrender.com/expenses/" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
   -d '{
@@ -322,7 +322,7 @@ curl -X POST "https://your-api-domain.com/expenses/" \
 
 #### Get Monthly Summary
 ```bash
-curl -X GET "https://your-api-domain.com/summary/2025/10" \
+curl -X GET "https://expense-tracker-api-i88y.onrender.com/expenses/summary/2025/10" \
   -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
 ```
 
@@ -364,21 +364,3 @@ The API uses standard HTTP status codes:
 - Token expiration and refresh mechanism
 - Input validation and sanitization
 - CORS protection
-
-## 🤝 Contributing
-
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🆘 Support
-
-If you have any questions or run into issues, please open an issue on GitHub or contact the development team.
-
----
